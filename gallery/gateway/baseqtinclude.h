@@ -18,7 +18,8 @@
 #include <QVariantList>
 #include <QVariantMap>
 #include <QSettings>
+#include <QList>
 
 #define null NULL
-
+#define boolean bool
 #endif // BASEQTINCLUDE_H

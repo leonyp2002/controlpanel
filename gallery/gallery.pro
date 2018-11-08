@@ -7,7 +7,10 @@ SOURCES += \
     gateway/messagemanager.cpp \
     gateway/appinfo.cpp \
     gateway/appinfofunc.cpp \
-    gateway/preferenceutil.cpp
+    gateway/preferenceutil.cpp \
+    gateway/backaudiodevice.cpp \
+    gateway/backaudioloop.cpp \
+    gateway/scenariotriggerinfo.cpp
 
 OTHER_FILES += \
     gallery.qml
@@ -23,4 +26,7 @@ HEADERS += \
     gateway/baseqtinclude.h \
     gateway/appinfo.h \
     gateway/appinfofunc.h \
-    gateway/preferenceutil.h
+    gateway/preferenceutil.h \
+    gateway/backaudiodevice.h \
+    gateway/backaudioloop.h \
+    gateway/scenariotriggerinfo.h

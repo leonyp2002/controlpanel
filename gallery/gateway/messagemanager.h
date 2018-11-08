@@ -3,7 +3,9 @@
 
 #include <QObject>
 #include "baseqtinclude.h"
-
+#include "backaudiodevice.h"
+#include "backaudioloop.h"
+#include "scenariotriggerinfo.h"
 class MessageManager : public QObject
 {
     Q_OBJECT
@@ -40,6 +42,25 @@ public:
     QString getCubeInfo();
     QString enableScenarioWithId(int scenarioId, QString pwd);
     QString heartPing();
+    QString checkOutDeviceListStatus(QList<QVariant> deviceLoopList, QString moduleType, QHash<QString, QVariant> subItem);
+    QString checkoutCommonDeviceStatus(QList<QVariant> deviceLoopMapList);
+    QString checkRoomStatus(QList<QVariant> roomLoopMap);
+    QString checkoutBackAudioStatus(QString serialnum, int loopId);
+    QString sendDeviceStatus(QList<QVariant> deviceloopmap, QString moduleType, QHash<QString, QVariant> subItem);
+    QString sendBackAudioLoopStatus(QList<QVariant> control, BackaudioDevice device, BackaudioLoop loop);
+    QString sendIRCode(QString imageName, QString macAddr, QList<QVariant> irData);
+    QString findNewModule();
+    QString sendRuleStatus(boolean isOn, ScenarioTriggerInfo info);
+    QString deleteRule(ScenarioTriggerInfo info);
+    QString addRule(QHash<QString, QVariant> availableTime, int delayTime, QString aliasName, QList<QVariant> conditionArray, QList<QVariant> actionArray);
+    QString readVentilationDeviceStatus(long primaryId);
+    QString read485VentilationDeviceStatus(long primaryId);
+
+    QString sendControlVentilation485(QVariant controlMap);
+    QString sendControlVentilation(QVariant controlMap);
+    QString enableSchedule(int primaryId, boolean ison);
+    QString deleteSchedule(int primaryId);
+    QString modifySchedule(QVariant map);
 };
 
 //Q_DECLARE_METATYPE(QHash<QString, QVariant>)
