@@ -62,7 +62,18 @@ QString MessageManager::sendStrWithBody(QHash<QString, QVariant> items) {
     }
 
 }
-
+/**
+ * 获取绑定设备的device id
+ *
+ * @return
+ */
+QString MessageManager::getDeviceId() {
+    AppInfo *info = AppInfoFunc::getCurrentUser();
+    if (info != NULL) {
+        return "" + info->deviceId;
+    }
+    return "0";
+}
 QHash<QString, QVariant> MessageManager::AddToSequenceMsg(QHash<QString, QVariant> &item)
 {
         if (sequenceId == 0xffffffff) {
@@ -120,8 +131,9 @@ QString MessageManager::sendIPCVideoButton(QString ip_addr, QString time) {
  */
 QString MessageManager::loginCubeFromLocal() {
     //AppInfo info = AppInfoFunc.getCurrentUser();
-    QString cubeid = AppInfoFunc::getCurrentUser()->username;
-    QString cubepassword = AppInfoFunc::getCurrentUser()->password;
+    AppInfo *info = AppInfoFunc::getCurrentUser();
+    QString cubeid = info->username;
+    QString cubepassword = info->password;
 //    if (info == null) {
 //        info = AppInfoFunc.getGuestUser(context);
 //    }
@@ -132,5 +144,131 @@ QString MessageManager::loginCubeFromLocal() {
     items.insert("cubepwd", cubepassword.toLatin1().data());
     items = AddToSequenceMsg(items);
 
+    return sendStrWithBody(items);
+}
+
+/**
+ * local 获取本地数据
+ *
+ * @param context
+ * @return
+ */
+
+QString MessageManager::getCubeInfoFromLocal() {
+    AppInfo *info = AppInfoFunc::getCurrentUser();
+//    if (LoginController.getInstance(context).getLoginType() == LoginController.LOGIN_TYPE_CONNECT_CLOUD) {
+//        info = AppInfoFunc.getCurrentUser(context);
+//    } else if (LoginController.getInstance(context).getLoginType() == LoginController.LOGIN_TYPE_CONNECT_WIFI) {
+//        info = AppInfoFunc.getGuestUser(context);
+//    }
+    //QString curVersion = (info == null ? "0" : ("".equalsIgnoreCase(info.database_version) ? "0" : "" + info.database_version));
+    QString curVersion = (info ==NULL ?"0":info->version);
+    //Loger.print(TAG, "ssd send current version : " + curVersion, Thread.currentThread());
+    //body
+    QHash<QString, QVariant> items;
+    items.insert("action", "request");
+    items.insert("subaction", "getdeviceconfig");
+    items.insert("moduletype", "cube");
+    items.insert("version", info->version.toLatin1().data());
+    items = AddToSequenceMsg(items);
+    return sendStrWithBody(items);
+}
+
+/**
+ * local 查询升级
+ *
+ * @param context
+ * @return
+ */
+//public String checkCubeUpdateFromLocal(Context context) {
+//    Map<String, Object> items = new HashMap<String, Object>();
+//    items.put("action", "request");
+//    items.put("subaction", "upgrade");
+//    items.put("moduletype", "cube");
+//    items.put("upgradecmd", "newversion");
+//    items = AddToSequenceMsg(items);
+//    return sendStrWithBody(items);
+//}
+/**
+ * 通过websocket 发送命令
+ *
+ * @return
+ */
+QString MessageManager::getCubeInfo() {
+    //body
+    AppInfo *info = AppInfoFunc::getCurrentUser();
+    QHash<QString, QVariant> items;
+    items.insert("action", "request");
+    items.insert("subaction", "getdeviceconfig");
+    items.insert("moduletype", "cube");
+    items.insert("version", (info == NULL?0:info->database_version.toLatin1().data()));
+    items = AddToSequenceMsg(items);
+    QString deviceid = getDeviceId();
+    if (deviceid!="0") {
+        QHash<QString, QVariant> send;
+        send.insert("type", "Opaque");
+        send.insert("deviceId", deviceid);
+        send.insert("cubemessage", items);
+        QString result = "";
+//        Gson gson = new Gson();
+//        result = gson.toJson(send);
+        result = QJsonDocument::fromVariant(send).toJson();
+        return result;
+    } else {
+        //Loger.print(TAG, "ssd getCubeInfo : error no deviceid", Thread.currentThread());
+        qDebug()<<TAG<<"ssd getCubeInfo: error no deviceid";
+        return null;
+    }
+
+}
+
+/**
+     * 设置安防密码
+     *
+     * @param oldpwd
+     * @param newpwd
+     * @return
+     */
+//    public String setAlarmPwd(String oldpwd, String newpwd) {
+//        Map<String, Object> items = new HashMap<String, Object>();
+//        items.put("action", "request");
+//        items.put("subaction", "configsecurity");
+//        items.put("moduletype", "cube");
+//        items.put("oldpwd", oldpwd);
+//        items.put("newpwd", newpwd);
+//        items = AddToSequenceMsg(items);
+
+//        return sendStrWithBody(items);
+//    }
+
+    /**
+     * 通过websocket 发送scenario命令
+     *
+     * @param scenarioId
+     * @return
+     */
+QString MessageManager::enableScenarioWithId(int scenarioId, QString pwd) {
+        if (pwd.length()==0) {
+            pwd = "123456";
+        }
+        QHash<QString, QVariant> items;
+        items.insert("action", "request");
+        items.insert("subaction", "setdevice");
+        items.insert("moduletype", "scenario");
+        items.insert("scenarioid", scenarioId);
+        items.insert("securitypwd", pwd.toLatin1().data());
+        items = AddToSequenceMsg(items);
+
+        return sendStrWithBody(items);
+    }
+
+/**
+ * 组织心跳包
+ */
+QString MessageManager::heartPing() {
+    QHash<QString, QVariant> items;
+    items.insert("action", "request");
+    items.insert("subaction", "heartbeat");
+    items = AddToSequenceMsg(items);
     return sendStrWithBody(items);
 }

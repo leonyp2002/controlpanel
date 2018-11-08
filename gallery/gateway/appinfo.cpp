@@ -25,7 +25,7 @@ void AppInfo::init()
     // Cube
     cube_location = "";// city
     user_image_path = "";
-    current_scenario_id;
+    current_scenario_id=0;
     cube_ip = "";
     cube_mac = "";//新增
     cube_port = -1;

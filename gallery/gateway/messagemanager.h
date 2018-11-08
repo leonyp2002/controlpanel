@@ -24,6 +24,7 @@ private:
     static MessageManager* m_instance;
     const static QString TAG;
     QString sendStrWithBody(QHash<QString, QVariant> items);
+    QString getDeviceId();
 public:
 
     static QString getTAG();
@@ -35,6 +36,10 @@ public:
     QString get485configtype();
     QString sendIPCVideoButton(QString ip_addr, QString time);
     QString loginCubeFromLocal();
+    QString getCubeInfoFromLocal();
+    QString getCubeInfo();
+    QString enableScenarioWithId(int scenarioId, QString pwd);
+    QString heartPing();
 };
 
 //Q_DECLARE_METATYPE(QHash<QString, QVariant>)

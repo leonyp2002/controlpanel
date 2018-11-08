@@ -19,4 +19,6 @@
 #include <QVariantMap>
 #include <QSettings>
 
+#define null NULL
+
 #endif // BASEQTINCLUDE_H
