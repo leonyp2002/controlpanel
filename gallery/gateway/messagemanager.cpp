@@ -3,10 +3,13 @@
 #include "appinfofunc.h"
 const QString MessageManager::TAG ="MessageManager: ";
 ulong MessageManager::sequenceId = 0;
+MessageManager* MessageManager::m_instance = NULL;
+
 MessageManager::MessageManager(QObject *parent) : QObject(parent)
 {
 
 }
+
 
 QString MessageManager::getTAG()
 {

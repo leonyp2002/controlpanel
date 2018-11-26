@@ -6,6 +6,7 @@
 #include "backaudiodevice.h"
 #include "backaudioloop.h"
 #include "scenariotriggerinfo.h"
+
 class MessageManager : public QObject
 {
     Q_OBJECT
@@ -15,7 +16,7 @@ public:
     {
         if(!m_instance)
         {
-            m_instance = new MessageManager();
+            m_instance = new MessageManager;
         }
         return m_instance;
     }

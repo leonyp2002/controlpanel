@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = gallery
-QT += quick
+QT += quick sql xml
 
 SOURCES += \
     gallery.cpp \
@@ -10,7 +10,16 @@ SOURCES += \
     gateway/preferenceutil.cpp \
     gateway/backaudiodevice.cpp \
     gateway/backaudioloop.cpp \
-    gateway/scenariotriggerinfo.cpp
+    gateway/scenariotriggerinfo.cpp \
+    gateway/socketcontroller.cpp \
+    gateway/commandqueuemanager.cpp \
+    gateway/receiverqueuemanager.cpp \
+    gateway/netconstant.cpp \
+    gateway/utility.cpp \
+    gateway/respondercontroller.cpp \
+    gateway/commondata.cpp \
+    gateway/configcubedatabasehelper.cpp \
+    gateway/basicloop.cpp
 
 OTHER_FILES += \
     gallery.qml
@@ -29,4 +38,20 @@ HEADERS += \
     gateway/preferenceutil.h \
     gateway/backaudiodevice.h \
     gateway/backaudioloop.h \
-    gateway/scenariotriggerinfo.h
+    gateway/scenariotriggerinfo.h \
+    gateway/socketcontroller.h \
+    gateway/commandqueuemanager.h \
+    gateway/receiverqueuemanager.h \
+    gateway/netconstant.h \
+    gateway/utility.h \
+    gateway/respondercontroller.h \
+    gateway/commondata.h \
+    gateway/configcubedatabasehelper.h \
+    gateway/basicloop.h
+
+DISTFILES += \
+    gallery
+
+INCLUDEPATH += \
+    gateway \
+    gateway/3rdparty

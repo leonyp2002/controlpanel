@@ -19,7 +19,15 @@
 #include <QVariantMap>
 #include <QSettings>
 #include <QList>
+#include <QTimer>
+#include <QRunnable>
+#include <QThreadPool>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 
 #define null NULL
 #define boolean bool
+
+#define HEAT_PING_TIMER "heartPingTimer"
+
 #endif // BASEQTINCLUDE_H
